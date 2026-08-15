@@ -28,6 +28,7 @@ Thumbs.db
 *.swp
 *.swo
 *.bak
+*.orig
 
 # React Native
 frontend_mobile/node_modules/
