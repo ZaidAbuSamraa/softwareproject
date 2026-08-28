@@ -1,0 +1,7 @@
+{
+  "name": "TempApp",
+  "displayName": "Trainix",
+  "plugins": [
+    "expo-asset"
+  ]
+}
