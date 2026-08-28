@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Image, Animated, Easing } from 'react-native';
+import { View, Text, StyleSheet, Animated, Easing } from 'react-native';
+import TrainixLogo from '../assets/TrainixLogo';
 
 interface SplashScreenProps {
   onFinish: () => void;
@@ -39,11 +40,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onFinish }) => {
   return (
     <View style={styles.container}>
       <Animated.View style={[styles.logoWrapper, { transform: [{ scale }], opacity }] }>
-        <Image
-          source={require('../assets/Trainixlogo.png')}
-          style={styles.logo}
-          resizeMode="contain"
-        />
+        <TrainixLogo size={140} />
       </Animated.View>
       <Text style={styles.title}>TRAINIX</Text>
       <Text style={styles.subtitle}>Connecting Dreams</Text>
@@ -66,10 +63,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
-  },
-  logo: {
-    width: 140,
-    height: 140,
   },
   title: {
     fontSize: 28,
