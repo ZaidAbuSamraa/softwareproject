@@ -73,11 +73,16 @@ class University {
   }
 
   // Find university by domain (e.g., najah.com)
+  // Matches the university's own domain (najah.edu) as well as its
+  // subdomains (stu.najah.edu, cs.najah.edu, ...), since students and staff
+  // sign up with addresses on a subdomain of the university's domain.
   static findByDomain(domain) {
-    const query = "SELECT * FROM Universities WHERE domain = ?";
-    
+    // ORDER BY id ASC makes the match deterministic if more than one
+    // university row happens to share the same domain.
+    const query = "SELECT * FROM Universities WHERE domain = ? OR ? LIKE CONCAT('%.', domain) ORDER BY id ASC";
+
     return new Promise((resolve, reject) => {
-      db.query(query, [domain], (err, results) => {
+      db.query(query, [domain, domain], (err, results) => {
         if (err) {
           reject(err);
         } else {

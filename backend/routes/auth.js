@@ -164,10 +164,12 @@ router.post("/signup", async (req, res) => {
           });
           console.log("✅ Notification sent to university user:", universityUser.id);
         } else {
-          console.log("⚠️ University found but no user account");
+          console.log("⚠️ University found but no user account - falling back to admin");
+          await sendToAdmin();
         }
       } else {
-        console.log("⚠️ No university found for domain:", domain);
+        console.log("⚠️ No university found for domain:", domain, "- falling back to admin");
+        await sendToAdmin();
       }
     } else if (user_type === 'trainer') {
       // For trainers, send notification to their company
@@ -200,10 +202,12 @@ router.post("/signup", async (req, res) => {
           });
           console.log("✅ Notification sent to company user:", companyUser.id);
         } else {
-          console.log("⚠️ Company found but no user account");
+          console.log("⚠️ Company found but no user account - falling back to admin");
+          await sendToAdmin();
         }
       } else {
-        console.log("⚠️ No company found for domain:", domain);
+        console.log("⚠️ No company found for domain:", domain, "- falling back to admin");
+        await sendToAdmin();
       }
     } else {
       // For other user types (company, university), send to admin

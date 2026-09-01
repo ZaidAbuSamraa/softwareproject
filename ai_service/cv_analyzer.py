@@ -21,7 +21,7 @@ BACKEND_DIR = os.path.join(BASE_DIR, "..", "backend")
 load_dotenv(os.path.join(BACKEND_DIR, ".env"))
 
 GROQ_API_KEY = os.environ.get("GROQ_API_KEY")
-GROQ_MODEL = "llama-3.3-70b-versatile"
+GROQ_MODEL = "openai/gpt-oss-120b"
 MAX_CV_TEXT_CHARS = 12000
 
 groq_client = Groq(api_key=GROQ_API_KEY) if GROQ_API_KEY else None
