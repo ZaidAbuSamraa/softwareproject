@@ -36,7 +36,7 @@
 }
 
 .filter-label svg {
-  color: #14b8a6;
+  color: #3D63BE;
 }
 
 .internship-filter-select {
@@ -53,14 +53,14 @@
 }
 
 .internship-filter-select:hover {
-  border-color: #14b8a6;
+  border-color: #3D63BE;
   background-color: #f9fafb;
 }
 
 .internship-filter-select:focus {
   outline: none;
-  border-color: #14b8a6;
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  border-color: #3D63BE;
+  box-shadow: 0 0 0 3px rgba(61, 99, 190, 0.1);
 }
 
 .internship-filter-select option {
@@ -81,13 +81,13 @@
 }
 
 .filter-select:hover {
-  border-color: #14b8a6;
+  border-color: #3D63BE;
 }
 
 .filter-select:focus {
   outline: none;
-  border-color: #14b8a6;
-  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+  border-color: #3D63BE;
+  box-shadow: 0 0 0 3px rgba(61, 99, 190, 0.1);
 }
 
 .applicants-grid {
@@ -147,7 +147,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #2dd4bf 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #5B7FC4 0%, #1F3A7A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -197,8 +197,8 @@
 }
 
 .match-good {
-  background: #ccfbf1;
-  color: #115e59;
+  background: #D9E2F5;
+  color: #16294F;
 }
 
 .match-medium {
@@ -248,8 +248,8 @@
 }
 
 .status-new {
-  background: #ccfbf1;
-  color: #115e59;
+  background: #D9E2F5;
+  color: #16294F;
 }
 
 .status-reviewed {
@@ -287,8 +287,8 @@
 
 .skill-tag {
   padding: 6px 12px;
-  background: #f0fdfa;
-  color: #115e59;
+  background: #EEF2FB;
+  color: #16294F;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
@@ -360,7 +360,7 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -434,7 +434,7 @@
 }
 
 .nav-item.active {
-  background-color: #0d9488;
+  background-color: #2F4C81;
   color: white;
 }
 
@@ -514,8 +514,8 @@
   padding: 32px 28px;
   margin-bottom: 28px;
   border-radius: 24px;
-  background: linear-gradient(135deg, #134e4a 0%, #0d9488 40%, #38bdf8 100%);
-  box-shadow: 0 16px 40px rgba(13, 148, 136, 0.35);
+  background: linear-gradient(135deg, #0F1D3D 0%, #2F4C81 40%, #38bdf8 100%);
+  box-shadow: 0 16px 40px rgba(47, 76, 129, 0.35);
   color: #ffffff;
   position: relative;
   overflow: hidden;
@@ -606,7 +606,7 @@
 }
 
 .dashboard-content.colorful {
-  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 55%, #f0fdfa 100%);
+  background: linear-gradient(180deg, #f9fafb 0%, #ffffff 55%, #EEF2FB 100%);
 }
 
 /* Alert Messages */
@@ -655,7 +655,7 @@
   width: 80px;
   height: 80px;
   border-radius: 12px;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -713,7 +713,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background-color: #0d9488;
+  background-color: #2F4C81;
   color: white;
   border: none;
   border-radius: 8px;
@@ -724,7 +724,7 @@
 }
 
 .upload-logo-btn:hover {
-  background-color: #0f766e;
+  background-color: #1F3A7A;
 }
 
 .upload-logo-btn svg {
@@ -791,7 +791,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #0d9488;
+  border-color: #2F4C81;
   background-color: white;
 }
 
@@ -848,12 +848,12 @@
 }
 
 .btn-primary {
-  background-color: #0d9488;
+  background-color: #2F4C81;
   color: white;
 }
 
 .btn-primary:hover {
-  background-color: #0f766e;
+  background-color: #1F3A7A;
 }
 
 .btn-secondary {
@@ -929,9 +929,9 @@
 .internship-form .form-group select:focus,
 .internship-form .form-group textarea:focus {
   outline: none;
-  border-color: #0d9488;
+  border-color: #2F4C81;
   background-color: white;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  box-shadow: 0 0 0 3px rgba(47, 76, 129, 0.1);
 }
 
 .internship-form .form-group textarea {
@@ -984,14 +984,14 @@
 }
 
 .internship-form .btn-primary {
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+  box-shadow: 0 4px 12px rgba(47, 76, 129, 0.3);
 }
 
 .internship-form .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(13, 148, 136, 0.4);
+  box-shadow: 0 6px 20px rgba(47, 76, 129, 0.4);
 }
 
 .internship-form .btn-primary:active {
@@ -1090,7 +1090,7 @@
   font-weight: 700;
   color: #1f2937;
   margin-bottom: 8px;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1177,8 +1177,8 @@
 
 .search-box input:focus {
   outline: none;
-  border-color: #0d9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  border-color: #2F4C81;
+  box-shadow: 0 0 0 3px rgba(47, 76, 129, 0.1);
 }
 
 .filter-select {
@@ -1198,8 +1198,8 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #0d9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  border-color: #2F4C81;
+  box-shadow: 0 0 0 3px rgba(47, 76, 129, 0.1);
 }
 
 .internships-table-container {
@@ -1335,11 +1335,11 @@
 }
 
 .view-btn {
-  color: #0d9488;
+  color: #2F4C81;
 }
 
 .view-btn:hover {
-  background-color: #ccfbf1;
+  background-color: #D9E2F5;
 }
 
 .edit-btn {
@@ -1446,11 +1446,11 @@
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: #0d9488;
+  accent-color: #2F4C81;
 }
 
 .trainer-checkbox input[type="checkbox"]:checked + .trainer-info {
-  color: #0d9488;
+  color: #2F4C81;
 }
 
 .trainer-info {
@@ -1487,13 +1487,13 @@
 .selected-count {
   margin-top: 0.75rem;
   padding: 0.6rem 1.25rem;
-  background: linear-gradient(135deg, #ccfbf1 0%, #ccfbf1 100%);
-  color: #115e59;
+  background: linear-gradient(135deg, #D9E2F5 0%, #D9E2F5 100%);
+  color: #16294F;
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 600;
   text-align: center;
-  border: 1px solid #99f6e4;
+  border: 1px solid #A7BCE8;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
@@ -1508,7 +1508,7 @@
   justify-content: center;
   width: 20px;
   height: 20px;
-  background: #115e59;
+  background: #16294F;
   color: white;
   border-radius: 50%;
   font-size: 0.75rem;
@@ -1532,13 +1532,13 @@
   display: inline-flex;
   align-items: center;
   padding: 0.35rem 0.75rem;
-  background: linear-gradient(135deg, #ccfbf1 0%, #ccfbf1 100%);
+  background: linear-gradient(135deg, #D9E2F5 0%, #D9E2F5 100%);
   color: #0369a1;
   border-radius: 16px;
   font-size: 0.8rem;
   font-weight: 600;
   white-space: nowrap;
-  border: 1px solid #99f6e4;
+  border: 1px solid #A7BCE8;
   transition: all 0.2s;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
@@ -1546,7 +1546,7 @@
 .trainer-badge:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background: linear-gradient(135deg, #99f6e4 0%, #ccfbf1 100%);
+  background: linear-gradient(135deg, #A7BCE8 0%, #D9E2F5 100%);
 }
 
 .trainer-badge::before {
@@ -1755,8 +1755,8 @@
   align-items: center;
   gap: 12px;
   padding: 16px;
-  background: linear-gradient(135deg, #f0fdfa 0%, #ccfbf1 100%);
-  border: 1px solid #99f6e4;
+  background: linear-gradient(135deg, #EEF2FB 0%, #D9E2F5 100%);
+  border: 1px solid #A7BCE8;
   border-radius: 12px;
   transition: all 0.2s;
 }
@@ -1771,7 +1771,7 @@
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+  background: linear-gradient(135deg, #3D63BE 0%, #2F4C81 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1791,7 +1791,7 @@
 
 .trainer-info strong {
   font-size: 15px;
-  color: #134e4a;
+  color: #0F1D3D;
   font-weight: 600;
   white-space: nowrap;
   overflow: hidden;
@@ -1973,15 +1973,15 @@
 }
 
 .conversation-item.active {
-  background-color: #f0fdfa;
-  border-left: 3px solid #0d9488;
+  background-color: #EEF2FB;
+  border-left: 3px solid #2F4C81;
 }
 
 .conversation-avatar {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2014,7 +2014,7 @@
 }
 
 .unread-count {
-  background-color: #0d9488;
+  background-color: #2F4C81;
   color: white;
   padding: 2px 8px;
   border-radius: 10px;
@@ -2129,7 +2129,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%);
+  background: linear-gradient(135deg, #2F4C81 0%, #1F3A7A 100%);
   color: white;
   display: flex;
   align-items: center;
@@ -2228,13 +2228,13 @@
 }
 
 .message-input:focus {
-  border-color: #0d9488;
-  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+  border-color: #2F4C81;
+  box-shadow: 0 0 0 3px rgba(47, 76, 129, 0.1);
 }
 
 .send-button {
   padding: 12px 24px;
-  background-color: #0d9488;
+  background-color: #2F4C81;
   color: white;
   border: none;
   border-radius: 24px;
@@ -2248,8 +2248,8 @@
 }
 
 .send-button:hover:not(:disabled) {
-  background-color: #0f766e;
-  box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
+  background-color: #1F3A7A;
+  box-shadow: 0 2px 8px rgba(47, 76, 129, 0.3);
 }
 
 .send-button:disabled {

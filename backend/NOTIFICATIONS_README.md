@@ -151,7 +151,7 @@ node scripts/createNotificationsTable.js
       "message": "You have a meeting at 3 PM",
       "type": "meeting",
       "is_read": false,
-      "created_at": "2025-01-18T10:00:00.000Z"
+      "created_at": "2026-08-18T10:00:00.000Z"
     }
   ]
 }

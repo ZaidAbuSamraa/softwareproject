@@ -22,10 +22,10 @@ async function checkNotifications() {
     console.log('✅ Connected to database\n');
     
     // Get student user_id
-    console.log('1️⃣ Checking student with email noor@najah.com...');
+    console.log('1️⃣ Checking student with email test.student@najah.com...');
     const [students] = await connection.query(
       'SELECT u.id as user_id, u.full_name, u.email FROM Users u WHERE u.email = ?',
-      ['noor@najah.com']
+      ['test.student@najah.com']
     );
     
     if (students.length === 0) {

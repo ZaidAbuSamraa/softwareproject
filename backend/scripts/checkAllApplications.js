@@ -46,7 +46,7 @@ const checkAllApplications = async () => {
     
     // Check for Nora specifically
     console.log(`\n🔍 Checking for Nora's applications...`);
-    const noraQuery = `
+    const testQuery = `
       SELECT 
         im.*,
         u.full_name,
@@ -56,20 +56,20 @@ const checkAllApplications = async () => {
       LEFT JOIN Students s ON im.student_id = s.id
       LEFT JOIN Users u ON s.user_id = u.id
       LEFT JOIN Internships i ON im.internship_id = i.id
-      WHERE u.full_name LIKE '%nora%' OR u.full_name LIKE '%Noor%'
+      WHERE u.full_name LIKE '%test%'
       ORDER BY im.applied_at DESC
       LIMIT 5
     `;
     
-    const noraApps = await new Promise((resolve, reject) => {
-      db.query(noraQuery, (err, results) => {
+    const testApps = await new Promise((resolve, reject) => {
+      db.query(testQuery, (err, results) => {
         if (err) reject(err);
         else resolve(results);
       });
     });
     
-    console.log(`\n📊 Nora's recent applications: ${noraApps.length}\n`);
-    noraApps.forEach((app, index) => {
+    console.log(`\n📊 Test student's recent applications: ${testApps.length}\n`);
+    testApps.forEach((app, index) => {
       console.log(`${index + 1}. ${app.full_name} (user_id: ${app.user_id})`);
       console.log(`   → Internship: ${app.internship_title} (ID: ${app.internship_id})`);
       console.log(`   → Applied: ${app.applied}`);

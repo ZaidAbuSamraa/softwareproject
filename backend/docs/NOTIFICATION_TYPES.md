@@ -255,5 +255,5 @@ MODIFY COLUMN type ENUM(
 
 ---
 
-**آخر تحديث:** November 3, 2025  
+**آخر تحديث:** September 1, 2026  
 **الإصدار:** 1.1 (بعد دمج mergevideocall)

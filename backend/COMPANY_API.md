@@ -86,8 +86,8 @@ GET /api/companies?status=active
       "website": "https://techcorp.com",
       "logo": "https://techcorp.com/logo.png",
       "status": "active",
-      "created_at": "2025-10-15T10:00:00.000Z",
-      "updated_at": "2025-10-15T10:00:00.000Z"
+      "created_at": "2026-08-15T10:00:00.000Z",
+      "updated_at": "2026-08-15T10:00:00.000Z"
     }
   ]
 }
@@ -121,8 +121,8 @@ GET /api/companies/1
     "website": "https://techcorp.com",
     "logo": "https://techcorp.com/logo.png",
     "status": "active",
-    "created_at": "2025-10-15T10:00:00.000Z",
-    "updated_at": "2025-10-15T10:00:00.000Z"
+    "created_at": "2026-08-15T10:00:00.000Z",
+    "updated_at": "2026-08-15T10:00:00.000Z"
   }
 }
 ```

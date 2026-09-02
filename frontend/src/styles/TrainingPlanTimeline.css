@@ -6,7 +6,7 @@
   margin-bottom: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   border: 1px solid #e5e7eb;
-  border-left: 4px solid #0d9488;
+  border-left: 4px solid #2F4C81;
 }
 
 .plan-card-header {
@@ -47,8 +47,8 @@
 }
 
 .plan-status-badge.status-active {
-  background-color: #ccfbf1;
-  color: #115e59;
+  background-color: #D9E2F5;
+  color: #16294F;
 }
 
 .plan-status-badge.status-completed {
@@ -127,8 +127,8 @@
 }
 
 .timeline-dot.active {
-  background-color: #0d9488;
-  box-shadow: 0 0 0 2px #0d9488;
+  background-color: #2F4C81;
+  box-shadow: 0 0 0 2px #2F4C81;
 }
 
 .timeline-dot.active svg {
@@ -137,8 +137,8 @@
 
 /* Approved status - Blue */
 .timeline-dot.approved {
-  background-color: #0d9488;
-  box-shadow: 0 0 0 2px #0d9488;
+  background-color: #2F4C81;
+  box-shadow: 0 0 0 2px #2F4C81;
 }
 
 .timeline-dot.approved svg {
@@ -200,8 +200,8 @@
 }
 
 .btn-view-task-details:hover {
-  background-color: #0d9488;
-  border-color: #0d9488;
+  background-color: #2F4C81;
+  border-color: #2F4C81;
   color: white;
 }
 
@@ -252,7 +252,7 @@
 }
 
 .task-detail-section h4 svg {
-  color: #0d9488;
+  color: #2F4C81;
 }
 
 .task-content {
@@ -282,7 +282,7 @@
 }
 
 .task-upload-section h4 svg {
-  color: #0d9488;
+  color: #2F4C81;
 }
 
 .upload-solution-area {
@@ -303,8 +303,8 @@
 }
 
 .upload-solution-btn:hover {
-  border-color: #0d9488;
-  background-color: #f0fdfa;
+  border-color: #2F4C81;
+  background-color: #EEF2FB;
 }
 
 .upload-solution-btn svg {
@@ -313,7 +313,7 @@
 }
 
 .upload-solution-btn:hover svg {
-  color: #0d9488;
+  color: #2F4C81;
 }
 
 .upload-solution-btn span {

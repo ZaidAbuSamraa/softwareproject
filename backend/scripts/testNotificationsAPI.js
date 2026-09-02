@@ -4,7 +4,7 @@ async function testAPI() {
   try {
     console.log('🧪 Testing Notifications API...\n');
     
-    const userId = 7; // noor's user_id
+    const userId = 7; // sample student's user_id
     
     console.log(`📡 Sending GET request to: http://localhost:5050/api/notifications/user/${userId}`);
     

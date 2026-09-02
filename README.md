@@ -52,7 +52,7 @@
 ## 📁 هيكل المشروع
 
 ```
-Trainix_Gp_noor/
+Trainix/
 ├── backend/                    # الخادم (Backend)
 │   ├── config/                # إعدادات قاعدة البيانات
 │   ├── routes/                # مسارات API

@@ -33,6 +33,20 @@ function StudentDashboard() {
   const [selectedCV, setSelectedCV] = useState(null);
   const [cvFileName, setCvFileName] = useState('');
   const [cvAnalysis, setCvAnalysis] = useState(null);
+  const [cvMode, setCvMode] = useState('upload'); // 'upload' | 'build'
+  const [builderForm, setBuilderForm] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    degree: '',
+    university: '',
+    gpa: '',
+    summary: '',
+    skillsInput: '',
+  });
+  const [builderExperience, setBuilderExperience] = useState([
+    { title: '', company: '', duration: '', description: '' },
+  ]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
   const [selectedInternship, setSelectedInternship] = useState(null);
@@ -1129,6 +1143,58 @@ function StudentDashboard() {
     }
   };
 
+  // Shared by both the file-upload flow and the CV-builder flow: send a CV
+  // file path through the AI analyzer, then persist the result to the DB.
+  const analyzeAndSaveCV = async (filePath) => {
+    setMessage({ type: 'success', text: 'Analyzing with AI...' });
+
+    const analyzeResponse = await fetch('http://localhost:5001/analyze-cv', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        cv_path: filePath
+      }),
+    });
+
+    const analyzeData = await analyzeResponse.json();
+
+    if (analyzeResponse.ok && analyzeData.success) {
+      console.log('AI Analysis Result:', analyzeData.analysis);
+
+      const saveCVResponse = await fetch('http://localhost:5050/api/cvs', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          cv_file: filePath,
+          analysis_data: analyzeData.analysis
+        }),
+      });
+
+      const saveCVData = await saveCVResponse.json();
+
+      setMessage({
+        type: 'success',
+        text: saveCVResponse.ok && saveCVData.success
+          ? 'CV analyzed successfully!'
+          : 'CV analyzed! (DB save failed)'
+      });
+
+      setCvAnalysis(analyzeData.analysis);
+      return true;
+    }
+
+    setMessage({
+      type: 'error',
+      text: analyzeData.message || 'AI analysis failed, but CV was saved'
+    });
+    return false;
+  };
+
   const handleCVUpload = async () => {
     if (!selectedCV) {
       setMessage({ type: 'error', text: 'Please select a CV file first' });
@@ -1139,7 +1205,6 @@ function StudentDashboard() {
     setMessage({ type: '', text: '' });
 
     try {
-      // Step 1: Upload CV
       const formData = new FormData();
       formData.append('cv', selectedCV);
 
@@ -1156,64 +1221,65 @@ function StudentDashboard() {
         return;
       }
 
-      setMessage({ type: 'success', text: 'CV uploaded! Analyzing with AI...' });
-
-      // Step 2: Analyze CV with AI
-      const analyzeResponse = await fetch('http://localhost:5001/analyze-cv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          cv_path: uploadData.filePath
-        }),
-      });
-
-      const analyzeData = await analyzeResponse.json();
-
-      if (analyzeResponse.ok && analyzeData.success) {
-        console.log('AI Analysis Result:', analyzeData.analysis);
-        
-        // Step 3: Save CV record to database
-        const saveCVResponse = await fetch('http://localhost:5050/api/cvs', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_id: user.id,
-            cv_file: uploadData.filePath,
-            analysis_data: analyzeData.analysis
-          }),
-        });
-
-        const saveCVData = await saveCVResponse.json();
-
-        if (saveCVResponse.ok && saveCVData.success) {
-          setMessage({ 
-            type: 'success', 
-            text: `CV analyzed successfully!` 
-          });
-        } else {
-          setMessage({ 
-            type: 'success', 
-            text: `CV analyzed! (DB save failed)` 
-          });
-        }
-        
-        // Set analysis results to display
-        setCvAnalysis(analyzeData.analysis);
+      const ok = await analyzeAndSaveCV(uploadData.filePath);
+      if (ok) {
         setSelectedCV(null);
         setCvFileName('');
-      } else {
-        setMessage({ 
-          type: 'error', 
-          text: analyzeData.message || 'AI analysis failed, but CV was uploaded' 
-        });
       }
     } catch (error) {
       console.error('CV upload/analysis error:', error);
       setMessage({ type: 'error', text: 'Failed to process CV' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBuilderExperienceChange = (index, field, value) => {
+    setBuilderExperience(prev => prev.map((exp, i) => i === index ? { ...exp, [field]: value } : exp));
+  };
+
+  const addBuilderExperienceRow = () => {
+    setBuilderExperience(prev => [...prev, { title: '', company: '', duration: '', description: '' }]);
+  };
+
+  const removeBuilderExperienceRow = (index) => {
+    setBuilderExperience(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleBuildCV = async () => {
+    if (!builderForm.full_name || !builderForm.email) {
+      setMessage({ type: 'error', text: 'Please fill in at least your name and email' });
+      return;
+    }
+
+    setLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const payload = {
+        ...builderForm,
+        skills: builderForm.skillsInput.split(',').map(s => s.trim()).filter(Boolean),
+        experience: builderExperience.filter(exp => exp.title || exp.company),
+      };
+
+      const generateResponse = await fetch('http://localhost:5050/api/cv-builder/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      const generateData = await generateResponse.json();
+
+      if (!generateResponse.ok || !generateData.success) {
+        setMessage({ type: 'error', text: generateData.message || 'Failed to generate CV' });
+        setLoading(false);
+        return;
+      }
+
+      await analyzeAndSaveCV(generateData.filePath);
+    } catch (error) {
+      console.error('CV build/analysis error:', error);
+      setMessage({ type: 'error', text: 'Failed to build CV' });
     } finally {
       setLoading(false);
     }
@@ -2074,6 +2140,132 @@ function StudentDashboard() {
                 </div>
               )}
 
+              <div className="cv-mode-toggle">
+                <button
+                  type="button"
+                  className={`cv-mode-btn ${cvMode === 'upload' ? 'active' : ''}`}
+                  onClick={() => setCvMode('upload')}
+                >
+                  I have a CV
+                </button>
+                <button
+                  type="button"
+                  className={`cv-mode-btn ${cvMode === 'build' ? 'active' : ''}`}
+                  onClick={() => setCvMode('build')}
+                >
+                  Don't have a CV? Build one
+                </button>
+              </div>
+
+              {cvMode === 'build' && (
+                <div className="cv-builder-form">
+                  <div className="cv-builder-grid">
+                    <input
+                      type="text"
+                      placeholder="Full Name *"
+                      value={builderForm.full_name}
+                      onChange={(e) => setBuilderForm({ ...builderForm, full_name: e.target.value })}
+                    />
+                    <input
+                      type="email"
+                      placeholder="Email *"
+                      value={builderForm.email}
+                      onChange={(e) => setBuilderForm({ ...builderForm, email: e.target.value })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Phone"
+                      value={builderForm.phone}
+                      onChange={(e) => setBuilderForm({ ...builderForm, phone: e.target.value })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Degree / Major (e.g. BSc Computer Science)"
+                      value={builderForm.degree}
+                      onChange={(e) => setBuilderForm({ ...builderForm, degree: e.target.value })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="University"
+                      value={builderForm.university}
+                      onChange={(e) => setBuilderForm({ ...builderForm, university: e.target.value })}
+                    />
+                    <input
+                      type="text"
+                      placeholder="GPA"
+                      value={builderForm.gpa}
+                      onChange={(e) => setBuilderForm({ ...builderForm, gpa: e.target.value })}
+                    />
+                  </div>
+
+                  <textarea
+                    className="cv-builder-textarea"
+                    placeholder="Short summary about yourself (optional)"
+                    rows={3}
+                    value={builderForm.summary}
+                    onChange={(e) => setBuilderForm({ ...builderForm, summary: e.target.value })}
+                  />
+
+                  <input
+                    type="text"
+                    placeholder="Skills, separated by commas (e.g. HTML, CSS, React, Git)"
+                    value={builderForm.skillsInput}
+                    onChange={(e) => setBuilderForm({ ...builderForm, skillsInput: e.target.value })}
+                  />
+
+                  <h4 className="cv-builder-subheading">Experience (optional)</h4>
+                  {builderExperience.map((exp, index) => (
+                    <div className="cv-builder-exp-row" key={index}>
+                      <div className="cv-builder-grid">
+                        <input
+                          type="text"
+                          placeholder="Title / Role"
+                          value={exp.title}
+                          onChange={(e) => handleBuilderExperienceChange(index, 'title', e.target.value)}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Company / Project"
+                          value={exp.company}
+                          onChange={(e) => handleBuilderExperienceChange(index, 'company', e.target.value)}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Duration (e.g. 2024 - Present)"
+                          value={exp.duration}
+                          onChange={(e) => handleBuilderExperienceChange(index, 'duration', e.target.value)}
+                        />
+                      </div>
+                      <textarea
+                        className="cv-builder-textarea"
+                        placeholder="What did you do?"
+                        rows={2}
+                        value={exp.description}
+                        onChange={(e) => handleBuilderExperienceChange(index, 'description', e.target.value)}
+                      />
+                      {builderExperience.length > 1 && (
+                        <button type="button" className="cv-builder-remove-btn" onClick={() => removeBuilderExperienceRow(index)}>
+                          Remove
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                  <button type="button" className="cv-builder-add-btn" onClick={addBuilderExperienceRow}>
+                    + Add another experience
+                  </button>
+
+                  <button
+                    type="button"
+                    className="btn-upload-cv"
+                    onClick={handleBuildCV}
+                    disabled={loading}
+                  >
+                    {loading ? 'Building...' : 'Generate & Analyze CV'}
+                  </button>
+                </div>
+              )}
+
+              {cvMode === 'upload' && (
               <div className="cv-upload-container">
                 <div className="cv-upload-box">
                   <div className="cv-upload-icon">
@@ -2110,8 +2302,8 @@ function StudentDashboard() {
                 </div>
 
                 {selectedCV && (
-                  <button 
-                    className="btn-upload-cv" 
+                  <button
+                    className="btn-upload-cv"
                     onClick={handleCVUpload}
                     disabled={loading}
                   >
@@ -2119,6 +2311,7 @@ function StudentDashboard() {
                   </button>
                 )}
               </div>
+              )}
 
               {/* AI Analysis Results */}
               {cvAnalysis && (
