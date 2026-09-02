@@ -28,7 +28,9 @@ Thumbs.db
 *.swp
 *.swo
 *.bak
-*.orig
+
+# Separate standalone project (its own git repo, not part of this one)
+mobile-app/
 
 # React Native
 frontend_mobile/node_modules/

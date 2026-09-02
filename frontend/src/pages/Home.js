@@ -161,7 +161,7 @@ function Home() {
           </div>
           <div className="hero-image">
             <img
-              src="https://cdn.prod.website-files.com/6645e067437815581429586a/6645e4c4dcbe81af51eb80bf_freepik-export-20240423053531sHwp%201.png"
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80"
               alt="Trainix Platform Illustration"
               className="hero-img"
             />
