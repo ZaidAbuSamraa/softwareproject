@@ -1125,7 +1125,7 @@ function CompanyDashboard() {
         setShowStudentSelectionModal(false);
         
         // Open video call in new window
-        const videoCallUrl = `http://localhost:3000/video-call/${videoCallRoomID}`;
+        const videoCallUrl = `${window.location.origin}/video-call/${videoCallRoomID}`;
         console.log('🚀 Opening video call:', videoCallUrl);
         
         const newWindow = window.open(videoCallUrl, '_blank', 'width=1200,height=800');
