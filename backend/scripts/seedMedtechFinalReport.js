@@ -1,0 +1,119 @@
+// One-off script: create a new student, get them accepted into MedTech's
+// Frontend Developer Intern posting, then have the trainer submit a final
+// report (ratings-based evaluation) for them.
+import User from "../models/User.js";
+import Student from "../models/Student.js";
+import Internship from "../models/Internship.js";
+import CV from "../models/CV.js";
+import InternshipMatch from "../models/InternshipMatch.js";
+import aiMatchingService from "../services/aiMatchingService.js";
+import db from "../config/database.js";
+
+const PASSWORD = "Trainix@2026";
+const MEDTECH_INTERNSHIP_ID = 13;
+const TRAINER_ID = 6; // Suhail Barghouti (Trainers.id, not Users.id)
+
+const NEW_STUDENT = {
+  full_name: "Hadi Qawasmi",
+  email: "hadi.qawasmi@stu.najah.edu",
+  universityId: 1, // An-Najah
+  major: "Computer Science",
+  academic_year: "Year 4",
+  gpa: 3.60,
+  work_mode: "remote",
+  skills: ["HTML", "CSS", "JavaScript", "React", "Git", "Responsive Design", "REST APIs"],
+};
+
+const dbRun = (sql, params = []) =>
+  new Promise((resolve, reject) => db.query(sql, params, (err, r) => (err ? reject(err) : resolve(r))));
+
+async function ensureUser(full_name, email, user_type) {
+  const existing = await User.findByEmail(email);
+  if (existing) return existing.id;
+  const result = await User.create({ full_name, email, password: PASSWORD, user_type });
+  return result.insertId;
+}
+
+async function main() {
+  const userId = await ensureUser(NEW_STUDENT.full_name, NEW_STUDENT.email, "student");
+  let studentRow = await Student.findByUserId(userId);
+  let studentId;
+  if (studentRow) {
+    studentId = studentRow.id;
+    console.log(`= student already exists: ${NEW_STUDENT.full_name} (id ${studentId})`);
+  } else {
+    const result = await Student.create({
+      user_id: userId,
+      university_id: NEW_STUDENT.universityId,
+      major: NEW_STUDENT.major,
+      academic_year: NEW_STUDENT.academic_year,
+      gpa: NEW_STUDENT.gpa,
+      skills: NEW_STUDENT.skills.join(", "),
+      status: "not_started",
+    });
+    studentId = result.insertId;
+    console.log(`+ student created: ${NEW_STUDENT.full_name} (id ${studentId})`);
+  }
+
+  await CV.upsert({
+    student_id: studentId,
+    cv_file: "demo-cv-hadi.pdf",
+    analysis_data: {
+      Name: NEW_STUDENT.full_name,
+      Email: NEW_STUDENT.email,
+      Phone: "+970-59-6667778",
+      Degree: `BSc ${NEW_STUDENT.major}`,
+      GPA: NEW_STUDENT.gpa,
+      Skills: NEW_STUDENT.skills,
+      Experience: [],
+      work_mode: NEW_STUDENT.work_mode,
+    },
+  });
+
+  const cv = await CV.findByStudentId(studentId);
+  const cvData = typeof cv.analysis_data === "string" ? JSON.parse(cv.analysis_data) : cv.analysis_data;
+  const internships = await Internship.findByStudentUniversity(NEW_STUDENT.universityId);
+  for (const internship of internships) {
+    const result = aiMatchingService.calculateMatch(
+      cv.analysis_data, internship.requirements, internship.specialization,
+      internship.min_gpa, internship.work_mode, cvData.GPA ?? NEW_STUDENT.gpa, cvData.work_mode
+    );
+    if (result.matchPercentage > 0) {
+      await InternshipMatch.upsert({
+        student_id: studentId, internship_id: internship.id,
+        match_percentage: result.matchPercentage, matched_skills: result.matchedSkills,
+        matched_categories: result.matchedCategories, gpa_match: result.gpaMatch,
+        gpa_message: result.gpaMessage, work_mode_match: result.workModeMatch,
+        work_mode_message: result.workModeMessage,
+      });
+    }
+  }
+
+  await InternshipMatch.applyToInternship(studentId, MEDTECH_INTERNSHIP_ID, 20);
+  const match = await InternshipMatch.getByStudentAndInternship(studentId, MEDTECH_INTERNSHIP_ID);
+  console.log(`+ applied: ${match.match_percentage}% match`);
+
+  await InternshipMatch.updateStatus(match.id, "accepted");
+  console.log("+ application accepted");
+
+  // Link the trainer to this internship if not already (Internship_Trainers)
+  const existingLink = await dbRun(
+    "SELECT id FROM Internship_Trainers WHERE internship_id=? AND trainer_id=?",
+    [MEDTECH_INTERNSHIP_ID, TRAINER_ID]
+  );
+  if (existingLink.length === 0) {
+    await dbRun("INSERT INTO Internship_Trainers (internship_id, trainer_id) VALUES (?, ?)", [MEDTECH_INTERNSHIP_ID, TRAINER_ID]);
+    console.log("+ linked trainer to internship");
+  } else {
+    console.log("= trainer already linked to internship");
+  }
+
+  console.log(`\nLogin as this student: ${NEW_STUDENT.email} / ${PASSWORD}`);
+  console.log(`studentId=${studentId} for the final-report step`);
+  process.exit(0);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
