@@ -10,22 +10,31 @@ import aiMatchingService from "../services/aiMatchingService.js";
 import db from "../config/database.js";
 
 const PASSWORD = "Trainix@2026";
-const MEDTECH_INTERNSHIP_ID = 13;
-const TRAINER_ID = 6; // Suhail Barghouti (Trainers.id, not Users.id)
+
+const dbRun = (sql, params = []) =>
+  new Promise((resolve, reject) => db.query(sql, params, (err, r) => (err ? reject(err) : resolve(r))));
+
+const [najahRow] = await dbRun("SELECT id FROM Universities WHERE domain LIKE '%najah.edu%' LIMIT 1");
+const [medtechInternshipRow] = await dbRun(
+  "SELECT i.id FROM Internships i JOIN Company c ON i.company_id = c.id WHERE c.email = 'careers@medtechps.com' LIMIT 1"
+);
+const [trainerRow] = await dbRun(
+  "SELECT t.id FROM Trainers t JOIN Users u ON t.user_id = u.id WHERE u.email = 'suhail.trainer@medtechps.com' LIMIT 1"
+);
+const NAJAH_ID = najahRow.id;
+const MEDTECH_INTERNSHIP_ID = medtechInternshipRow.id;
+const TRAINER_ID = trainerRow.id; // Suhail Barghouti (Trainers.id, not Users.id)
 
 const NEW_STUDENT = {
   full_name: "Hadi Qawasmi",
   email: "hadi.qawasmi@stu.najah.edu",
-  universityId: 1, // An-Najah
+  universityId: NAJAH_ID,
   major: "Computer Science",
   academic_year: "Year 4",
   gpa: 3.60,
   work_mode: "remote",
   skills: ["HTML", "CSS", "JavaScript", "React", "Git", "Responsive Design", "REST APIs"],
 };
-
-const dbRun = (sql, params = []) =>
-  new Promise((resolve, reject) => db.query(sql, params, (err, r) => (err ? reject(err) : resolve(r))));
 
 async function ensureUser(full_name, email, user_type) {
   const existing = await User.findByEmail(email);

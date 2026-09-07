@@ -11,10 +11,20 @@ import aiMatchingService from "../services/aiMatchingService.js";
 
 const PASSWORD = "Trainix@2026";
 
+const dbRun = (sql, params = []) =>
+  new Promise((resolve, reject) => db.query(sql, params, (err, r) => (err ? reject(err) : resolve(r))));
+
+const [najahRow] = await dbRun("SELECT id FROM Universities WHERE domain LIKE '%najah.edu%' LIMIT 1");
+const [medtechInternshipRow] = await dbRun(
+  "SELECT i.id FROM Internships i JOIN Company c ON i.company_id = c.id WHERE c.email = 'careers@medtechps.com' LIMIT 1"
+);
+const NAJAH_ID = najahRow.id;
+const MEDTECH_INTERNSHIP_ID = medtechInternshipRow.id;
+
 const NEW_STUDENT = {
   full_name: "Salma Khader",
   email: "salma.khader@stu.najah.edu",
-  universityId: 1, // An-Najah National University
+  universityId: NAJAH_ID,
   major: "Computer Science",
   academic_year: "Year 3",
   gpa: 3.30,
@@ -100,8 +110,7 @@ async function main() {
   }
   console.log(`+ AI matching run: ${matchCount} matches out of ${internships.length} visible internships`);
 
-  // Apply to MedTech's Frontend Developer Intern posting (internship id 13)
-  const MEDTECH_INTERNSHIP_ID = 13;
+  // Apply to MedTech's Frontend Developer Intern posting
   await InternshipMatch.applyToInternship(studentId, MEDTECH_INTERNSHIP_ID, 20);
   const match = await InternshipMatch.getByStudentAndInternship(studentId, MEDTECH_INTERNSHIP_ID);
   console.log(`+ applied to MedTech Frontend Developer Intern (match id ${match.id}, ${match.match_percentage}% match, status: ${match.status})`);

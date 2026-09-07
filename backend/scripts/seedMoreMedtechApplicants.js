@@ -2,6 +2,7 @@
 // apply each of them to MedTech Solutions' Frontend Developer Intern
 // posting (internship id 13), to get a realistic spread of match percentages
 // for the company's applicant list.
+import db from "../config/database.js";
 import User from "../models/User.js";
 import Student from "../models/Student.js";
 import Internship from "../models/Internship.js";
@@ -10,13 +11,24 @@ import InternshipMatch from "../models/InternshipMatch.js";
 import aiMatchingService from "../services/aiMatchingService.js";
 
 const PASSWORD = "Trainix@2026";
-const MEDTECH_INTERNSHIP_ID = 13;
+
+const dbRun = (sql, params = []) =>
+  new Promise((resolve, reject) => db.query(sql, params, (err, r) => (err ? reject(err) : resolve(r))));
+
+const [najahRow] = await dbRun("SELECT id FROM Universities WHERE domain LIKE '%najah.edu%' LIMIT 1");
+const [birzeitRow] = await dbRun("SELECT id FROM Universities WHERE domain LIKE '%birzeit.edu%' LIMIT 1");
+const [medtechInternshipRow] = await dbRun(
+  "SELECT i.id FROM Internships i JOIN Company c ON i.company_id = c.id WHERE c.email = 'careers@medtechps.com' LIMIT 1"
+);
+const NAJAH_ID = najahRow.id;
+const BIRZEIT_ID = birzeitRow.id;
+const MEDTECH_INTERNSHIP_ID = medtechInternshipRow.id;
 
 const NEW_STUDENTS = [
   {
     full_name: "Yousef Amro",
     email: "yousef.amro@stu.birzeit.edu",
-    universityId: 2, // Birzeit
+    universityId: BIRZEIT_ID,
     major: "Computer Science",
     academic_year: "Year 3",
     gpa: 3.20,
@@ -26,7 +38,7 @@ const NEW_STUDENTS = [
   {
     full_name: "Adam Khalil",
     email: "adam.khalil@stu.birzeit.edu",
-    universityId: 2, // Birzeit
+    universityId: BIRZEIT_ID,
     major: "Computer Engineering",
     academic_year: "Year 2",
     gpa: 3.50,
@@ -36,7 +48,7 @@ const NEW_STUDENTS = [
   {
     full_name: "Lina Tamimi",
     email: "lina.tamimi@stu.najah.edu",
-    universityId: 1, // An-Najah
+    universityId: NAJAH_ID,
     major: "Information Technology",
     academic_year: "Year 2",
     gpa: 2.90,
