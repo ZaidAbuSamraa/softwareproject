@@ -149,7 +149,7 @@ async function main() {
     } else {
       const [result] = await db.execute(
         `INSERT INTO Internships (company_id, title, description, requirements, specialization, capacity, status, min_gpa, work_mode, duration, start_date, end_date)
-         VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 MONTH))`,
+         VALUES (?, ?, ?, ?, ?, ?, 'open', ?, ?, ?, CURDATE(), DATE_ADD(CURDATE(), INTERVAL 4 MONTH))`,
         [companyIds[i.company], i.title, i.description, i.requirements, i.specialization, i.capacity, i.min_gpa, i.work_mode, i.duration]
       );
       internshipId = result.insertId;
