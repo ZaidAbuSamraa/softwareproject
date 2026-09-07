@@ -27,6 +27,25 @@ const dbRun = (sql, params = []) =>
     db.query(sql, params, (err, result) => (err ? reject(err) : resolve(result)));
   });
 
+// IDs are looked up by domain/email instead of hardcoded, since auto-increment
+// values drift between environments (a fresh DB rarely reproduces IDs 1-4).
+const univRows = await dbRun("SELECT id, domain FROM Universities");
+const findUni = (domainPart) => univRows.find((u) => u.domain?.includes(domainPart))?.id;
+const UNI = {
+  najah: findUni("najah.edu"),
+  birzeit: findUni("birzeit.edu"),
+  ptuk: findUni("ptuk"),
+};
+
+const companyRows = await dbRun("SELECT id, email FROM Company");
+const findCompany = (email) => companyRows.find((c) => c.email === email)?.id;
+const EXISTING_COMPANY = {
+  itg: findCompany("hr@itg.ps"),
+  exalt: findCompany("careers@exalt.ps"),
+  foothill: findCompany("hr@foothill.com"),
+  ghadeer: findCompany("hr@ghadeer.com"),
+};
+
 async function ensureUser(full_name, email, user_type) {
   const existing = await User.findByEmail(email);
   if (existing) return existing.id;
@@ -81,8 +100,6 @@ const NEW_COMPANIES = [
 ];
 
 // Existing companies we reuse (ids from current DB)
-const EXISTING_COMPANY = { itg: 1, exalt: 2, foothill: 3, ghadeer: 4 };
-
 // ---------------------------------------------------------------------------
 // 2) Trainers (one new trainer per new company + one for Ghadeer, which had none)
 // ---------------------------------------------------------------------------
@@ -133,7 +150,6 @@ const NEW_INTERNSHIPS = [
 // ---------------------------------------------------------------------------
 // 4) Partnerships to make new internships visible to students (findByStudentUniversity)
 // ---------------------------------------------------------------------------
-const UNI = { najah: 1, birzeit: 2, ptuk: 3 };
 const NEW_PARTNERSHIPS = [
   { universityId: UNI.najah, companyId: EXISTING_COMPANY.itg },
   { universityId: UNI.najah, companyId: EXISTING_COMPANY.foothill },
