@@ -19,7 +19,7 @@ router.post('/invite', async (req, res) => {
     const notificationPromises = studentIds.map(async (studentId) => {
       // Get student's user_id from students table
       const [studentRows] = await db.query(
-        'SELECT user_id FROM students WHERE id = ?',
+        'SELECT user_id FROM Students WHERE id = ?',
         [studentId]
       );
 
@@ -111,11 +111,11 @@ router.post('/notify', async (req, res) => {
           }
 
           const userId = results[0].user_id;
-          const videoCallLink = `http://localhost:3000/video-call/${roomID}`;
+          const videoCallLink = `${process.env.FRONTEND_URL || "http://localhost:3000"}/video-call/${roomID}`;
 
           // Create notification
           const insertQuery = `
-            INSERT INTO Notifications (user_id, title, message, type, created_at) 
+            INSERT INTO notifications (user_id, title, message, type, created_at)
             VALUES (?, ?, ?, ?, NOW())
           `;
 

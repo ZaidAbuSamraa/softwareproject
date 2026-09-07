@@ -66,7 +66,7 @@ router.post('/', async (req, res) => {
       
       await new Promise((resolve, reject) => {
         db.query(
-          `INSERT INTO Notifications (user_id, title, message, type)
+          `INSERT INTO notifications (user_id, title, message, type)
            VALUES (?, ?, ?, 'general')`,
           [studentData.user_id, notificationTitle, notificationMessage],
           (err, result) => {

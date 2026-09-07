@@ -610,9 +610,9 @@ router.get("/:internshipId/students", async (req, res) => {
         s.university_name,
         im.status,
         im.match_score
-      FROM students s
-      INNER JOIN users u ON s.user_id = u.id
-      INNER JOIN internship_matches im ON s.id = im.student_id
+      FROM Students s
+      INNER JOIN Users u ON s.user_id = u.id
+      INNER JOIN Internship_Matches im ON s.id = im.student_id
       WHERE im.internship_id = ? AND im.status = 'accepted'
       ORDER BY u.full_name ASC`,
       [internshipId]

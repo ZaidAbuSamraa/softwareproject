@@ -131,7 +131,7 @@ router.post("/", async (req, res) => {
       // Get all students who applied to this internship
       const studentsQuery = `
         SELECT DISTINCT u.id as user_id, u.full_name, u.email
-        FROM internship_matches im
+        FROM Internship_Matches im
         JOIN Students s ON im.student_id = s.id
         JOIN Users u ON s.user_id = u.id
         WHERE im.internship_id = ? AND im.applied = TRUE

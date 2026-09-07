@@ -20,9 +20,9 @@ class WeeklyReport {
           reviewed_at TIMESTAMP NULL,
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-          FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-          FOREIGN KEY (university_id) REFERENCES universities(id) ON DELETE SET NULL,
-          FOREIGN KEY (plan_id) REFERENCES internship_plans(id) ON DELETE SET NULL,
+          FOREIGN KEY (student_id) REFERENCES Students(id) ON DELETE CASCADE,
+          FOREIGN KEY (university_id) REFERENCES Universities(id) ON DELETE SET NULL,
+          FOREIGN KEY (plan_id) REFERENCES Internship_Plans(id) ON DELETE SET NULL,
           INDEX idx_student_id (student_id),
           INDEX idx_university_id (university_id),
           INDEX idx_plan_id (plan_id),
@@ -83,7 +83,7 @@ class WeeklyReport {
           wr.*,
           ip.title as plan_title
         FROM weekly_reports wr
-        LEFT JOIN internship_plans ip ON wr.plan_id = ip.id
+        LEFT JOIN Internship_Plans ip ON wr.plan_id = ip.id
         WHERE wr.student_id = ?
         ORDER BY wr.week_number ASC, wr.submitted_at DESC
       `;
@@ -109,9 +109,9 @@ class WeeklyReport {
           u.email as student_email,
           ip.title as plan_title
         FROM weekly_reports wr
-        JOIN students s ON wr.student_id = s.id
-        JOIN users u ON s.user_id = u.id
-        LEFT JOIN internship_plans ip ON wr.plan_id = ip.id
+        JOIN Students s ON wr.student_id = s.id
+        JOIN Users u ON s.user_id = u.id
+        LEFT JOIN Internship_Plans ip ON wr.plan_id = ip.id
         WHERE wr.id = ?
       `;
 
@@ -175,12 +175,12 @@ class WeeklyReport {
           c.name as company_name,
           i.title as internship_title
         FROM weekly_reports wr
-        JOIN students s ON wr.student_id = s.id
-        JOIN users u ON s.user_id = u.id
-        LEFT JOIN internship_plans ip ON wr.plan_id = ip.id
-        LEFT JOIN internship_matches im ON s.id = im.student_id AND im.status = 'accepted'
-        LEFT JOIN internships i ON im.internship_id = i.id
-        LEFT JOIN company c ON i.company_id = c.id
+        JOIN Students s ON wr.student_id = s.id
+        JOIN Users u ON s.user_id = u.id
+        LEFT JOIN Internship_Plans ip ON wr.plan_id = ip.id
+        LEFT JOIN Internship_Matches im ON s.id = im.student_id AND im.status = 'accepted'
+        LEFT JOIN Internships i ON im.internship_id = i.id
+        LEFT JOIN Company c ON i.company_id = c.id
         WHERE wr.university_id = ?
         ORDER BY wr.submitted_at DESC
       `;

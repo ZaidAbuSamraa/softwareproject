@@ -256,7 +256,7 @@ async function main() {
     console.log(`+ trainer created: ${t.full_name} (id ${result.insertId})`);
   }
   // company -> trainer lookup (existing + new), first trainer per company wins
-  const existingTrainerRows = await dbRun("SELECT id, company_id FROM trainers");
+  const existingTrainerRows = await dbRun("SELECT id, company_id FROM Trainers");
   const trainerByCompany = {};
   for (const row of existingTrainerRows) {
     if (!trainerByCompany[row.company_id]) trainerByCompany[row.company_id] = row.id;
@@ -265,7 +265,7 @@ async function main() {
   // ---- Internships ----
   const internshipId = {};
   const existingInternshipRows = await dbRun(
-    "SELECT id, company_id, title FROM internships WHERE title IN (?)",
+    "SELECT id, company_id, title FROM Internships WHERE title IN (?)",
     [NEW_INTERNSHIPS.map((i) => i.title)]
   );
   for (const i of NEW_INTERNSHIPS) {
@@ -422,7 +422,7 @@ async function main() {
     const end = plusDays(TODAY, 56);
 
     const existingPlanRows = await dbRun(
-      "SELECT id FROM internship_plans WHERE internship_id = ? AND trainer_id = ?",
+      "SELECT id FROM Internship_Plans WHERE internship_id = ? AND trainer_id = ?",
       [iid, tId]
     );
     let planId;
@@ -497,7 +497,7 @@ async function main() {
         overall_rating: 4.8,
       });
       await dbRun(
-        "UPDATE final_reports SET university_approved = 1, university_approved_at = NOW() WHERE id = ?",
+        "UPDATE Final_Reports SET university_approved = 1, university_approved_at = NOW() WHERE id = ?",
         [frResult.insertId]
       );
       console.log(`  + final report created & approved for ${a.studentKey} (id ${frResult.insertId})`);

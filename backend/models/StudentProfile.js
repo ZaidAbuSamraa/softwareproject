@@ -15,7 +15,7 @@ class StudentProfile {
         profile_image VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+        FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE,
         UNIQUE KEY unique_user_profile (user_id)
       )
     `;
@@ -34,7 +34,7 @@ class StudentProfile {
     const query = `
       SELECT sp.*, u.full_name, u.email, u.user_type 
       FROM student_profiles sp
-      JOIN users u ON sp.user_id = u.id
+      JOIN Users u ON sp.user_id = u.id
       WHERE sp.user_id = ?
     `;
     
@@ -79,7 +79,7 @@ class StudentProfile {
     const { full_name, email } = userData;
     
     const query = `
-      UPDATE users 
+      UPDATE Users
       SET full_name = ?, email = ?
       WHERE id = ?
     `;

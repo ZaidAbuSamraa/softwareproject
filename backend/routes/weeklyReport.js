@@ -108,7 +108,7 @@ router.post("/", async (req, res) => {
     if (university_id) {
       try {
         // Get university user_id
-        const universityQuery = `SELECT u.id as user_id FROM universities uni JOIN users u ON uni.email = u.email WHERE uni.id = ?`;
+        const universityQuery = `SELECT u.id as user_id FROM Universities uni JOIN Users u ON uni.email = u.email WHERE uni.id = ?`;
         const universityResult = await new Promise((resolve, reject) => {
           db.query(universityQuery, [university_id], (err, results) => {
             if (err) reject(err);
@@ -120,7 +120,7 @@ router.post("/", async (req, res) => {
           const universityUserId = universityResult[0].user_id;
 
           // Get student name
-          const studentQuery = `SELECT u.full_name FROM students s JOIN users u ON s.user_id = u.id WHERE s.id = ?`;
+          const studentQuery = `SELECT u.full_name FROM Students s JOIN Users u ON s.user_id = u.id WHERE s.id = ?`;
           const studentResult = await new Promise((resolve, reject) => {
             db.query(studentQuery, [student_id], (err, results) => {
               if (err) reject(err);
