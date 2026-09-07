@@ -229,6 +229,11 @@ async function main() {
     const result = await Company.create({ ...c, status: "active" });
     companyId[c.key] = result.insertId;
     console.log(`+ company created: ${c.name} (id ${result.insertId})`);
+
+    // Company.create only creates the Company profile row; it also needs a
+    // Users row with matching email/password to be able to log in at all.
+    await ensureUser(c.name, c.email, "company");
+    console.log(`  + login account created for ${c.email}`);
   }
 
   // ---- Partnerships ----
